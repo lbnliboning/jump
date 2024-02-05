@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Link Redirector</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 50px;
+    }
+    #redirectButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <h1>Random Link Redirector</h1>
+    <button id="redirectButton">Go to a Random Link</button>
+
+    <script>
+        document.getElementById('redirectButton').addEventListener('click', function() {
+            fetch('/api/random-links')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(links => {
+                    // 生成0到links数组长度减1的随机索引
+                    const randomIndex = Math.floor(Math.random() * links.length);
+                    // 获取随机链接并跳转
+                    window.location.href = links[randomIndex];
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+        });
+    </script>
+</body>
+</html>
